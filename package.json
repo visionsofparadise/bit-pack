@@ -1,5 +1,5 @@
 {
-  "name": "bit-pack",
+  "name": "minibit",
   "version": "1.0.0",
   "description": "Fast and efficient binary serialization.",
   "keywords": [
@@ -19,12 +19,12 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/visionsofparadise/bit-pack.git"
+    "url": "https://github.com/visionsofparadise/minibit.git"
   },
   "bugs": {
-    "url": "https://github.com/visionsofparadise/bit-pack/issues"
+    "url": "https://github.com/visionsofparadise/minibit/issues"
   },
-  "homepage": "https://github.com/visionsofparadise/bit-pack",
+  "homepage": "https://github.com/visionsofparadise/minibit",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

@@ -9,20 +9,20 @@ global.console = console;
 export const benchmarkCodec = (name: string, value: any, encodeFn: (binary: Binary) => any, decodeFn: (binary: Binary) => any) => {
 	const binary = new Binary();
 
-	const bitPackEncodeId = `bitPack.${name}.encode`;
+	const miniBitEncodeId = `miniBit.${name}.encode`;
 
 	new Suite("encode")
-		.add(bitPackEncodeId, () => {
+		.add(miniBitEncodeId, () => {
 			encodeFn(binary);
 
 			binary.toBuffer();
 
 			binary.resetWrite();
 		})
-		.add("msgpack.pack".padEnd(bitPackEncodeId.length, " "), () => {
+		.add("msgpack.pack".padEnd(miniBitEncodeId.length, " "), () => {
 			pack(value);
 		})
-		.add("JSON.stringify".padEnd(bitPackEncodeId.length, " "), () => {
+		.add("JSON.stringify".padEnd(miniBitEncodeId.length, " "), () => {
 			Buffer.from(JSON.stringify(value));
 		})
 		.on("cycle", (event: any) => {
@@ -34,22 +34,22 @@ export const benchmarkCodec = (name: string, value: any, encodeFn: (binary: Bina
 
 	encodeFn(binary);
 
-	const bitPackBuffer = binary.toBuffer();
+	const miniBitBuffer = binary.toBuffer();
 	const msgPackBuffer = pack(value);
 	const jsonBuffer = WebSafeBuffer.from(JSON.stringify(value));
 
-	const bitPackDecodeId = `bitPack.${name}.decode`;
+	const miniBitDecodeId = `miniBit.${name}.decode`;
 
 	new Suite("decode")
-		.add(bitPackDecodeId, () => {
+		.add(miniBitDecodeId, () => {
 			decodeFn(binary);
 
 			binary.resetRead();
 		})
-		.add("msgpack.unpack".padEnd(bitPackDecodeId.length, " "), () => {
+		.add("msgpack.unpack".padEnd(miniBitDecodeId.length, " "), () => {
 			unpack(msgPackBuffer);
 		})
-		.add("JSON.parse".padEnd(bitPackDecodeId.length, " "), () => {
+		.add("JSON.parse".padEnd(miniBitDecodeId.length, " "), () => {
 			JSON.parse(jsonBuffer.toString());
 		})
 		.on("cycle", (event: any) => {
@@ -59,7 +59,7 @@ export const benchmarkCodec = (name: string, value: any, encodeFn: (binary: Bina
 
 	console.log("");
 
-	console.log(`bitPack size:	${bitPackBuffer.byteLength}`);
+	console.log(`miniBit size:	${miniBitBuffer.byteLength}`);
 	console.log(`msgpack size:	${msgPackBuffer.byteLength}`);
 	console.log(`JSON size:   	${jsonBuffer.byteLength}`);
 };

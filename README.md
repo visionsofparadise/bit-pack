@@ -1,12 +1,12 @@
-# bit-pack
+# minibit
 
 Compression and decompression of data described by JSON Schema.
 
 ```
-npm install bit-pack
+npm install minibit
 ```
 
-Bit-pack allows you to reuse validation JSON Schema to compress data to a smaller size than JSON serialization.
+MiniBit allows you to reuse validation JSON Schema to compress data to a smaller size than JSON serialization.
 
 Typically, you can compress data to as little as 30% the size of arbitrary serialization such as JSON stringification and message pack.
 
@@ -19,7 +19,7 @@ This is achieved by:
 ## Usage
 
 ```js
-import { BitPack } from 'bit-pack';
+import { MiniBit } from 'minibit';
 
 const data = {
    // data
@@ -30,28 +30,28 @@ const schema = {
 };
 
 // Load schemas and referenced schemas
-const bitPack = new BitPack([schema])
+const miniBit = new MiniBit([schema])
 
-const buffer = bitPack.encode(data, schema['$id'])
+const buffer = miniBit.encode(data, schema['$id'])
 
-const dataB = bitPack.decode(buffer, schema['$id'])
+const dataB = miniBit.decode(buffer, schema['$id'])
 ```
 
 ## API
 
 ### Constructor
 
-#### `bitPack = new BitPack(schema, [...referencedSchemas])`
+#### `miniBit = new MiniBit(schema, [...referencedSchemas])`
 
-Create a new bitPack instance.
+Create a new miniBit instance.
 
 ### Instance Methods
 
-#### `buffer = bitPack.encode(data, schemaId)`
+#### `buffer = miniBit.encode(data, schemaId)`
 
 Encodes data to buffer.
 
-#### `data = bitPack.decode(buffer, schemaId)`
+#### `data = miniBit.decode(buffer, schemaId)`
 
 Decodes data from buffer.
 
@@ -66,16 +66,17 @@ The following changes in schema break backwards compatibility for encoded data:
 
 It is recommended to make the root schema an object, only add new properties and mark old properties as deprecated.
 
-BitPack does not validate data and treats object properties as optional. Decoding will not fail if a deprecated properties is not present.
+MiniBit does not validate data and treats object properties as optional. Decoding will not fail if a deprecated properties is not present.
 
 ## Benchmarks
 
-Benchmarks use a sample object that include all JSON schema types. The code for it can be found [here](https://github.com/visionsofparadise/bit-pack/src/benchmark.test.ts).
+Benchmarks use a sample object that include all JSON schema types. The code for it can be found [here](https://github.com/visionsofparadise/minibit/src/benchmark.test.ts).
 
-### Serialized Size
-| bitPack                      | 87 bytes                                   |
-| msgpack                      | 232 bytes                                  |
-| JSON                         | 306 bytes                                  |
+| Serializer   | Size        |
+|--------------|-------------|
+| minibit      | 87 bytes    |
+| msgpack      | 232 bytes   |
+| JSON         | 306 bytes   |
 
 ## License
 

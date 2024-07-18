@@ -90,8 +90,8 @@ it("benchmarks for spread of all types", () => {
 		"typeSpread",
 		value,
 		schema,
-		(bitPack) => bitPack.encode(value, schema["$id"]!),
-		(bitPack, buffer) => bitPack.decode(buffer, schema["$id"]!)
+		(miniBit) => miniBit.encode(value, schema["$id"]!),
+		(miniBit, buffer) => miniBit.decode(buffer, schema["$id"]!)
 	);
 
 	expect(true).toStrictEqual(true);
@@ -123,8 +123,8 @@ it("benchmarks for many hex strings", () => {
 		"hexArray",
 		value,
 		schema,
-		(bitPack) => bitPack.encode(value, schema["$id"]!),
-		(bitPack, buffer) => bitPack.decode(buffer, schema["$id"]!)
+		(miniBit) => miniBit.encode(value, schema["$id"]!),
+		(miniBit, buffer) => miniBit.decode(buffer, schema["$id"]!)
 	);
 
 	expect(true).toStrictEqual(true);

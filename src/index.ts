@@ -7,7 +7,7 @@ import { encodeValue } from "./codecs/value/encode";
 import { prepareValueSchema } from "./codecs/value/prepareSchema";
 import { ValueParameters } from "./codecs/value/schema";
 
-export class BitPack {
+export class MiniBit {
 	public readonly parameters: Record<string, ValueParameters>;
 
 	constructor(schemas?: Array<JSONSchema>) {
