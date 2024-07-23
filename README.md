@@ -74,7 +74,7 @@ Benchmarks use a sample object that include all JSON schema types. The code for 
 
 | Serializer   | Size        |
 |--------------|-------------|
-| minibit      | 87 bytes    |
+| minibit      | 90 bytes    |
 | msgpack      | 232 bytes   |
 | JSON         | 306 bytes   |
 

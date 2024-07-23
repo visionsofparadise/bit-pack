@@ -1,11 +1,11 @@
 import { Binary } from "../../Binary";
 import { encodeInteger } from "../integer/encode";
-import { StringParameters } from "./schema";
+import { STRING_LENGTH_PARAMETERS, StringParameters } from "./schema";
 
-export const encodeString = (string: string, binary: Binary, parameters: StringParameters): void => {
+export const encodeString = (string: string, binary: Binary, _: StringParameters): void => {
 	const byteLength = Buffer.byteLength(string, "utf8");
 
-	parameters.length ?? encodeInteger(byteLength, binary, parameters.lengthParameters || { type: "integer", bitLength: 32, byteLength: 4, minimum: 0, multipleOf: 1 });
+	encodeInteger(byteLength, binary, STRING_LENGTH_PARAMETERS);
 
 	binary.reallocateBuffer(byteLength);
 

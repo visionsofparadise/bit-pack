@@ -1,5 +1,4 @@
 import { RefResolver } from "json-schema-ref-resolver";
-import { JSONSchema } from "json-schema-to-ts";
 import { Binary } from "./Binary";
 import { WebSafeBuffer } from "./codecs/utilities/SafeBuffer";
 import { decodeValue } from "./codecs/value/decode";
@@ -10,7 +9,7 @@ import { ValueParameters } from "./codecs/value/schema";
 export class MiniBit {
 	public readonly parameters: Record<string, ValueParameters>;
 
-	constructor(schemas?: Array<JSONSchema>) {
+	constructor(schemas?: Array<any>) {
 		if (!schemas) {
 			this.parameters = {};
 
@@ -35,7 +34,7 @@ export class MiniBit {
 		this.parameters = Object.fromEntries(entries);
 	}
 
-	encode(data: any, schemaId: string): WebSafeBuffer {
+	encode<V>(data: V, schemaId: string): WebSafeBuffer {
 		const binary = new Binary();
 
 		const parameters = this.parameters[schemaId];

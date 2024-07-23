@@ -67,7 +67,5 @@ export const prepareStringSchema = (
 
 	return {
 		type: "string",
-		lengthParameters,
-		length,
 	};
 };

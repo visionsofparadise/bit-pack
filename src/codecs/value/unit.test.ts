@@ -97,5 +97,5 @@ it("encodes spread of all values", () => {
 	const result = decodeValue(binary, parameters);
 
 	expect(result).toStrictEqual(value);
-	expect(binary.readBitIndex).toBe(694);
+	expect(binary.readBitIndex).toBe(718);
 });

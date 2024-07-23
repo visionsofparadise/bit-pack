@@ -20,8 +20,14 @@ export interface StringJsonSchema {
 
 export interface StringParameters {
 	type: "string";
-	lengthParameters: IntegerParameters;
-	length?: number;
 }
 
 export type StringTypeParameters = Base64Parameters | HexParameters | DateParameters | DateTimeParameters | Ipv4Parameters | TimeParameters | UuidParameters;
+
+export const STRING_LENGTH_PARAMETERS: IntegerParameters = {
+	type: "integer",
+	bitLength: 32,
+	byteLength: 4,
+	minimum: 0,
+	multipleOf: 1,
+};

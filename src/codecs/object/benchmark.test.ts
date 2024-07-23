@@ -14,11 +14,11 @@ it("encodes and decodes object", () => {
 	const parameters: ObjectParameters = {
 		type: "object",
 		propertyParametersEntries: [
-			["test1", { type: "string", lengthParameters: DEFAULT_LENGTH_PARAMETERS }],
+			["test1", { type: "string" }],
 			["test2", { type: "integer", bitLength: 7, byteLength: 1, minimum: 0, multipleOf: 1 }],
 			["test3", { type: "boolean" }],
 		],
-		keyParameters: { type: "string", lengthParameters: DEFAULT_LENGTH_PARAMETERS },
+		keyParameters: { type: "string" },
 		evaluatedKeys: new Set(["test1", "test2", "test3"]),
 		lengthParameters: DEFAULT_LENGTH_PARAMETERS,
 	};

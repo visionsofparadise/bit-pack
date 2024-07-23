@@ -29,7 +29,7 @@ it("encodes and decodes prefixed array", () => {
 
 	const parameters: ArrayParameters = {
 		type: "array",
-		prefixParameters: [{ type: "string", lengthParameters: DEFAULT_LENGTH_PARAMETERS }, { type: "boolean" }],
+		prefixParameters: [{ type: "string" }, { type: "boolean" }],
 		itemParameters: { type: "integer", bitLength: 7, byteLength: 1, minimum: 0, multipleOf: 1 },
 		lengthParameters: DEFAULT_LENGTH_PARAMETERS,
 	};
