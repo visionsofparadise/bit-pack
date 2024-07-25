@@ -1,10 +1,11 @@
 import { unpack } from "msgpackr";
 import { Binary } from "../../Binary";
+import { MAX_32_BIT_INTEGER } from "../../utilities/calculateIntegerBitLength";
 import { decodeInteger } from "../integer/decode";
-import { AnyParameters } from "./schema";
+import { AnyJsonSchema } from "./schema";
 
-export const decodeAny = (binary: Binary, _: AnyParameters): any => {
-	const length = decodeInteger(binary, { type: "integer", bitLength: 32, byteLength: 4, minimum: 0, multipleOf: 1 });
+export const decodeAny = (binary: Binary, _: AnyJsonSchema): any => {
+	const length = decodeInteger(binary, { type: "integer", minimum: 0, maximum: MAX_32_BIT_INTEGER, multipleOf: 1 });
 
 	return unpack(binary.read(0, length));
 };

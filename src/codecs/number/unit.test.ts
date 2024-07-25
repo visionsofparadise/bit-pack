@@ -1,20 +1,20 @@
 import { Binary } from "../../Binary";
 import { decodeNumber } from "./decode";
 import { encodeNumber } from "./encode";
-import { NumberParameters } from "./schema";
+import { NumberJsonSchema } from "./schema";
 
 it("encodes and decodes number", () => {
 	const number = 63.124534534;
 
-	const parameters: NumberParameters = {
+	const schema: NumberJsonSchema = {
 		type: "number",
 	};
 
 	const binary = new Binary();
 
-	encodeNumber(number, binary, parameters);
+	encodeNumber(number, binary, schema);
 
-	const result = decodeNumber(binary, parameters);
+	const result = decodeNumber(binary, schema);
 
 	expect(result).toBe(number);
 	expect(binary.readBitIndex).toBe(64);

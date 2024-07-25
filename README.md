@@ -16,10 +16,14 @@ This is achieved by:
 - Compacting integer values used for lengths and counts down to exact bit depths based on expected ranges.
 - Storing references to const, enum and null values instead of actual values.
 
+Note:
+- Data is not validated against the JSON schema.
+- References are not followed and "allOf", "anyOf", "oneOf" properties are ignored. Make sure you dereference your schemas beforehand.
+
 ## Usage
 
 ```js
-import { MiniBit } from 'minibit';
+import { encode, decode } from 'minibit';
 
 const data = {
    // data
@@ -29,29 +33,18 @@ const schema = {
    // JSON Schema
 };
 
-// Load schemas and referenced schemas
-const miniBit = new MiniBit([schema])
+const buffer = encode(data, schema)
 
-const buffer = miniBit.encode(data, schema['$id'])
-
-const dataB = miniBit.decode(buffer, schema['$id'])
+const dataB = decode(buffer, schema)
 ```
 
 ## API
 
-### Constructor
-
-#### `miniBit = new MiniBit(schema, [...referencedSchemas])`
-
-Create a new miniBit instance.
-
-### Instance Methods
-
-#### `buffer = miniBit.encode(data, schemaId)`
+#### `buffer = encode(data, schema)`
 
 Encodes data to buffer.
 
-#### `data = miniBit.decode(buffer, schemaId)`
+#### `data = decode(buffer, schema)`
 
 Decodes data from buffer.
 

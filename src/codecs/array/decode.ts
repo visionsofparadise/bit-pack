@@ -1,17 +1,28 @@
 import { Binary } from "../../Binary";
 import { decodeInteger } from "../integer/decode";
-import { isNotNullOrUndefined } from "../utilities/isNotNullOrUndefined";
 import { decodeValue } from "../value/decode";
-import { ArrayParameters } from "./schema";
+import { ArrayJsonSchema } from "./schema";
 
-export const decodeArray = (binary: Binary, parameters: ArrayParameters): Array<any> => {
-	const array = parameters.prefixParameters.map((itemParameters) => decodeValue(binary, itemParameters));
+export const decodeArray = (binary: Binary, schema: ArrayJsonSchema): Array<any> => {
+	const array: Array<any> = [];
 
-	if (!parameters.itemParameters) return array;
+	if (schema.prefixItems) schema.prefixItems.forEach((itemSchema) => array.push(decodeValue(binary, itemSchema)));
 
-	const length = isNotNullOrUndefined(parameters.length) ? parameters.length - array.length : decodeInteger(binary, parameters.lengthParameters);
+	if (!schema.items) return array;
 
-	for (let i = 0; i < length; i++) array.push(decodeValue(binary, parameters.itemParameters));
+	const minimum = schema.minItems ?? 0;
+	const maximum = schema.maxItems ?? Number.MAX_SAFE_INTEGER;
+
+	const length =
+		minimum === maximum
+			? minimum
+			: decodeInteger(binary, {
+					type: "integer",
+					minimum,
+					maximum,
+			  });
+
+	for (let i = 0; i < length; i++) array.push(decodeValue(binary, schema.items));
 
 	return array;
 };

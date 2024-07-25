@@ -1,38 +1,38 @@
-import { AnyParameters } from "../any/schema";
-import { ArrayParameters } from "../array/schema";
-import { BooleanParameters } from "../boolean/schema";
-import { ConstParameters } from "../const/schema";
-import { EnumParameters } from "../enum/schema";
-import { IntegerParameters } from "../integer/schema";
-import { NullParameters } from "../null/schema";
-import { NumberParameters } from "../number/schema";
-import { ObjectParameters } from "../object/schema";
-import { Base64Parameters } from "../string/contentEncoding/base64/schema";
-import { HexParameters } from "../string/contentEncoding/hex/schema";
-import { DateParameters } from "../string/format/date/schema";
-import { DateTimeParameters } from "../string/format/dateTime/schema";
-import { Ipv4Parameters } from "../string/format/ipv4/schema";
-import { TimeParameters } from "../string/format/time/schema";
-import { UuidParameters } from "../string/format/uuid/schema";
-import { StringParameters } from "../string/schema";
-import { UnionParameters } from "../union/schema";
+import { AnyJsonSchema } from "../any/schema";
+import { ArrayJsonSchema } from "../array/schema";
+import { Base64JsonSchema } from "../base64/schema";
+import { BooleanJsonSchema } from "../boolean/schema";
+import { ConstJsonSchema } from "../const/schema";
+import { DateJsonSchema } from "../date/schema";
+import { DateTimeJsonSchema } from "../dateTime/schema";
+import { EnumJsonSchema } from "../enum/schema";
+import { HexJsonSchema } from "../hex/schema";
+import { IntegerJsonSchema } from "../integer/schema";
+import { Ipv4JsonSchema } from "../ipv4/schema";
+import { NullJsonSchema } from "../null/schema";
+import { NumberJsonSchema } from "../number/schema";
+import { ObjectJsonSchema } from "../object/schema";
+import { StringJsonSchema } from "../string/schema";
+import { TimeJsonSchema } from "../time/schema";
+import { UnionJsonSchema } from "../union/schema";
+import { UuidJsonSchema } from "../uuid/schema";
 
-export type ValueParameters =
-	| AnyParameters
-	| ArrayParameters
-	| Base64Parameters
-	| BooleanParameters
-	| ConstParameters
-	| DateParameters
-	| DateTimeParameters
-	| EnumParameters
-	| HexParameters
-	| IntegerParameters
-	| Ipv4Parameters
-	| NullParameters
-	| NumberParameters
-	| ObjectParameters
-	| StringParameters
-	| TimeParameters
-	| UnionParameters
-	| UuidParameters;
+export type ValueJsonSchema =
+	| AnyJsonSchema
+	| ArrayJsonSchema
+	| Base64JsonSchema
+	| BooleanJsonSchema
+	| ConstJsonSchema
+	| DateJsonSchema
+	| DateTimeJsonSchema
+	| EnumJsonSchema
+	| HexJsonSchema
+	| IntegerJsonSchema
+	| Ipv4JsonSchema
+	| NullJsonSchema
+	| NumberJsonSchema
+	| ObjectJsonSchema
+	| StringJsonSchema
+	| TimeJsonSchema
+	| UnionJsonSchema
+	| UuidJsonSchema;

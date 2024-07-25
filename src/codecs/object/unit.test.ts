@@ -1,8 +1,7 @@
 import { Binary } from "../../Binary";
-import { DEFAULT_LENGTH_PARAMETERS } from "../utilities/lengthParameters";
 import { decodeObject } from "./decode";
 import { encodeObject } from "./encode";
-import { ObjectParameters } from "./schema";
+import { ObjectJsonSchema } from "./schema";
 
 it("encodes and decodes object", () => {
 	const object = {
@@ -11,23 +10,21 @@ it("encodes and decodes object", () => {
 		test3: true,
 	};
 
-	const parameters: ObjectParameters = {
+	const schema: ObjectJsonSchema = {
 		type: "object",
-		propertyParametersEntries: [
-			["test1", { type: "string" }],
-			["test2", { type: "integer", bitLength: 7, byteLength: 1, minimum: 0, multipleOf: 1 }],
-			["test3", { type: "boolean" }],
-		],
-		keyParameters: { type: "string" },
-		evaluatedKeys: new Set(["test1", "test2", "test3"]),
-		lengthParameters: DEFAULT_LENGTH_PARAMETERS,
+		properties: {
+			test1: { type: "string" },
+			test2: { type: "integer", minimum: 0, maximum: 127, multipleOf: 1 },
+			test3: { type: "boolean" },
+		},
+		propertyNames: { type: "string" },
 	};
 
 	const binary = new Binary();
 
-	encodeObject(object, binary, parameters);
+	encodeObject(object, binary, schema);
 
-	const result = decodeObject(binary, parameters);
+	const result = decodeObject(binary, schema);
 
 	expect(result).toStrictEqual(object);
 	expect(binary.readBitIndex).toBe(84);
@@ -40,22 +37,19 @@ it("encodes and decodes map", () => {
 		test3: null,
 	};
 
-	const parameters: ObjectParameters = {
+	const schema: ObjectJsonSchema = {
 		type: "object",
-		propertyParametersEntries: [],
-		evaluatedKeys: new Set(),
-		keyParameters: { type: "string" },
-		additionalPropertyParameters: {
+		propertyNames: { type: "string" },
+		additionalProperties: {
 			type: "null",
 		},
-		lengthParameters: DEFAULT_LENGTH_PARAMETERS,
 	};
 
 	const binary = new Binary();
 
-	encodeObject(object, binary, parameters);
+	encodeObject(object, binary, schema);
 
-	const result = decodeObject(binary, parameters);
+	const result = decodeObject(binary, schema);
 
 	expect(result).toStrictEqual(object);
 	expect(binary.readBitIndex).toBe(248);

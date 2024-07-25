@@ -1,40 +1,47 @@
 import { Binary } from "../../Binary";
 import { encodeInteger } from "../integer/encode";
-import { DEFAULT_LENGTH_PARAMETERS } from "../utilities/lengthParameters";
 import { encodeValue } from "../value/encode";
-import { ObjectParameters } from "./schema";
+import { ObjectJsonSchema } from "./schema";
 
-export const encodeObject = (object: Record<string, any>, binary: Binary, parameters: ObjectParameters): void => {
-	parameters.propertyParametersEntries.forEach((parametersEntry, i) => {
-		const bitLength = 32 - Math.clz32(i) || 1;
+export const encodeObject = (object: Record<string, any>, binary: Binary, schema: ObjectJsonSchema): void => {
+	if (schema.properties) {
+		Object.entries(schema.properties).forEach((parametersEntry, i) => {
+			encodeInteger(i, binary, {
+				type: "integer",
+				minimum: 0,
+				maximum: i || 1,
+				multipleOf: 1,
+			});
 
-		encodeInteger(i, binary, {
-			type: "integer",
-			bitLength,
-			byteLength: Math.ceil(bitLength / 8),
-			minimum: 0,
-			multipleOf: 1,
+			const [key, valueParameters] = parametersEntry;
+
+			const value = object[key];
+
+			if (value === undefined) return;
+
+			encodeValue(value, binary, valueParameters);
 		});
+	}
 
-		const [key, valueParameters] = parametersEntry;
+	if (!schema.additionalProperties) return;
 
-		const value = object[key];
-
-		if (value === undefined) return;
-
-		encodeValue(value, binary, valueParameters);
-	});
-
-	if (!parameters.additionalPropertyParameters) return;
-
-	const restEntries = Object.entries(object).filter(([key]) => !parameters.evaluatedKeys.has(key));
+	const restEntries = Object.entries(object).filter(([key]) => !schema.properties || !schema.properties[key]);
 
 	if (restEntries.length === 0) return;
 
-	parameters.length ?? encodeInteger(restEntries.length, binary, parameters.lengthParameters);
+	const minimum = schema.minProperties ?? 0;
+	const maximum = schema.maxProperties ?? Number.MAX_SAFE_INTEGER;
+
+	if (minimum !== maximum) {
+		encodeInteger(restEntries.length, binary, {
+			type: "integer",
+			minimum,
+			maximum,
+		});
+	}
 
 	for (const [key, value] of restEntries) {
-		encodeValue(key, binary, parameters.keyParameters || { type: "string", lengthParameters: DEFAULT_LENGTH_PARAMETERS });
-		encodeValue(value, binary, parameters.additionalPropertyParameters);
+		encodeValue(key, binary, schema.propertyNames || { type: "string" });
+		encodeValue(value, binary, schema.additionalProperties);
 	}
 };

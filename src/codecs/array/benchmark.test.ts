@@ -1,28 +1,26 @@
-import { benchmarkCodec } from "../utilities/benchmarkCodec";
-import { DEFAULT_LENGTH_PARAMETERS } from "../utilities/lengthParameters";
+import { benchmarkCodec } from "../../utilities/benchmarkCodec";
 import { decodeArray } from "./decode";
 import { encodeArray } from "./encode";
-import { ArrayParameters } from "./schema";
+import { ArrayJsonSchema } from "./schema";
 
 it("benchmarks array codec", () => {
 	const array = ["afaf", "afaf", "afaf", "afaf", "afaf", "afaf"];
 
-	const parameters: ArrayParameters = {
+	const schema: ArrayJsonSchema = {
 		type: "array",
-		itemParameters: {
-			type: "hex",
-			length: 4,
-			lengthParameters: DEFAULT_LENGTH_PARAMETERS,
+		items: {
+			type: "string",
+			contentEncoding: "base16",
+			minLength: 4,
+			maxLength: 4,
 		},
-		prefixParameters: [],
-		lengthParameters: DEFAULT_LENGTH_PARAMETERS,
 	};
 
 	benchmarkCodec(
 		"array",
 		array,
-		(binary) => encodeArray(array, binary, parameters),
-		(binary) => decodeArray(binary, parameters)
+		(binary) => encodeArray(array, binary, schema),
+		(binary) => decodeArray(binary, schema)
 	);
 
 	expect(true).toBe(true);

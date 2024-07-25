@@ -1,41 +1,49 @@
 import { Binary } from "../../Binary";
 import { decodeInteger } from "../integer/decode";
-import { isNotNullOrUndefined } from "../utilities/isNotNullOrUndefined";
 import { decodeValue } from "../value/decode";
-import { ObjectParameters } from "./schema";
+import { ObjectJsonSchema } from "./schema";
 
-export const decodeObject = (binary: Binary, parameters: ObjectParameters): Record<string, any> => {
+export const decodeObject = (binary: Binary, schema: ObjectJsonSchema): Record<string, any> => {
 	const object: Record<string, any> = {};
 	let currentLength = 0;
 
-	parameters.propertyParametersEntries.forEach((parametersEntry, i) => {
-		const bitLength = 32 - Math.clz32(i) || 1;
+	if (schema.properties) {
+		Object.entries(schema.properties).forEach((parametersEntry, i) => {
+			const index = decodeInteger(binary, {
+				type: "integer",
+				minimum: 0,
+				maximum: i || 1,
+				multipleOf: 1,
+			});
 
-		const index = decodeInteger(binary, {
-			type: "integer",
-			bitLength,
-			byteLength: Math.ceil(bitLength / 8),
-			minimum: 0,
-			multipleOf: 1,
+			if (index !== i) return;
+
+			const [key, valueParameters] = parametersEntry;
+
+			const value = decodeValue(binary, valueParameters);
+
+			object[key] = value;
+			currentLength += 1;
 		});
+	}
 
-		if (index !== i) return;
+	if (!schema.additionalProperties) return object;
 
-		const [key, valueParameters] = parametersEntry;
+	const minimum = schema.minProperties ?? 0;
+	const maximum = schema.maxProperties ?? Number.MAX_SAFE_INTEGER;
 
-		const value = decodeValue(binary, valueParameters);
-
-		object[key] = value;
-		currentLength = currentLength + 1;
-	});
-
-	if (!parameters.additionalPropertyParameters) return object;
-
-	const length = isNotNullOrUndefined(parameters.length) ? parameters.length - currentLength : decodeInteger(binary, parameters.lengthParameters);
+	const length =
+		minimum === maximum
+			? minimum
+			: decodeInteger(binary, {
+					type: "integer",
+					minimum,
+					maximum,
+			  });
 
 	for (let i = 0; i < length; i++) {
-		const key = decodeValue(binary, parameters.keyParameters || { type: "string" });
-		const value = decodeValue(binary, parameters.additionalPropertyParameters);
+		const key = decodeValue(binary, schema.propertyNames || { type: "string" });
+		const value = decodeValue(binary, schema.additionalProperties);
 
 		object[key] = value;
 	}

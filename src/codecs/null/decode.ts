@@ -1,4 +1,4 @@
 import { Binary } from "../../Binary";
-import { NullParameters } from "./schema";
+import { NullJsonSchema } from "./schema";
 
-export const decodeNull = (_: Binary, __: NullParameters): null => null;
+export const decodeNull = (_: Binary, __: NullJsonSchema): null => null;

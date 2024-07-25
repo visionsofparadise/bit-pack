@@ -1,8 +1,7 @@
-import { benchmarkCodec } from "../utilities/benchmarkCodec";
-import { DEFAULT_LENGTH_PARAMETERS } from "../utilities/lengthParameters";
+import { benchmarkCodec } from "../../utilities/benchmarkCodec";
 import { decodeObject } from "./decode";
 import { encodeObject } from "./encode";
-import { ObjectParameters } from "./schema";
+import { ObjectJsonSchema } from "./schema";
 
 it("encodes and decodes object", () => {
 	const object = {
@@ -11,23 +10,21 @@ it("encodes and decodes object", () => {
 		test3: true,
 	};
 
-	const parameters: ObjectParameters = {
+	const schema: ObjectJsonSchema = {
 		type: "object",
-		propertyParametersEntries: [
-			["test1", { type: "string" }],
-			["test2", { type: "integer", bitLength: 7, byteLength: 1, minimum: 0, multipleOf: 1 }],
-			["test3", { type: "boolean" }],
-		],
-		keyParameters: { type: "string" },
-		evaluatedKeys: new Set(["test1", "test2", "test3"]),
-		lengthParameters: DEFAULT_LENGTH_PARAMETERS,
+		properties: {
+			test1: { type: "string" },
+			test2: { type: "integer", minimum: 0, maximum: 127, multipleOf: 1 },
+			test3: { type: "boolean" },
+		},
+		propertyNames: { type: "string" },
 	};
 
 	benchmarkCodec(
 		"object",
 		object,
-		(binary) => encodeObject(object, binary, parameters),
-		(binary) => decodeObject(binary, parameters)
+		(binary) => encodeObject(object, binary, schema),
+		(binary) => decodeObject(binary, schema)
 	);
 
 	expect(true).toBe(true);

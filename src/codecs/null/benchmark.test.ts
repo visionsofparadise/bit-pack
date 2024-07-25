@@ -1,20 +1,20 @@
-import { benchmarkCodec } from "../utilities/benchmarkCodec";
+import { benchmarkCodec } from "../../utilities/benchmarkCodec";
 import { decodeNull } from "./decode";
 import { encodeNull } from "./encode";
-import { NullParameters } from "./schema";
+import { NullJsonSchema } from "./schema";
 
 it("encodes and decodes null", () => {
 	const nullValue = null;
 
-	const parameters: NullParameters = {
+	const schema: NullJsonSchema = {
 		type: "null",
 	};
 
 	benchmarkCodec(
 		"null",
 		nullValue,
-		(binary) => encodeNull(nullValue, binary, parameters),
-		(binary) => decodeNull(binary, parameters)
+		(binary) => encodeNull(nullValue, binary, schema),
+		(binary) => decodeNull(binary, schema)
 	);
 
 	expect(true).toBe(true);

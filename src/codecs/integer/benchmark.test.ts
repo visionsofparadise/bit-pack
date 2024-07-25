@@ -1,24 +1,22 @@
-import { benchmarkCodec } from "../utilities/benchmarkCodec";
+import { benchmarkCodec } from "../../utilities/benchmarkCodec";
 import { decodeInteger } from "./decode";
 import { encodeInteger } from "./encode";
-import { IntegerParameters } from "./schema";
+import { IntegerJsonSchema } from "./schema";
 
 it("benchmarks integer codec", () => {
 	const integer = 87;
 
-	const parameters: IntegerParameters = {
+	const schema: IntegerJsonSchema = {
 		type: "integer",
-		bitLength: 8,
-		byteLength: 1,
 		minimum: 0,
-		multipleOf: 1,
+		maximum: 255,
 	};
 
 	benchmarkCodec(
 		"integer",
 		integer,
-		(binary) => encodeInteger(integer, binary, parameters),
-		(binary) => decodeInteger(binary, parameters)
+		(binary) => encodeInteger(integer, binary, schema),
+		(binary) => decodeInteger(binary, schema)
 	);
 
 	expect(true).toBe(true);

@@ -1,26 +1,16 @@
 import { Binary } from "../../Binary";
 import { decodeUnion } from "./decode";
 import { encodeUnion } from "./encode";
-import { UnionParameters } from "./schema";
+import { UnionJsonSchema } from "./schema";
 
 it("encodes and decodes union", () => {
 	const integer = 43;
 	const nullValue = null;
 
-	const parameters: UnionParameters = {
-		type: "union",
-		parametersMap: {
-			integer: {
-				type: "integer",
-				bitLength: 7,
-				byteLength: 1,
-				minimum: 0,
-				multipleOf: 1,
-			},
-			null: {
-				type: "null",
-			},
-		},
+	const parameters: UnionJsonSchema = {
+		type: ["integer", "null"],
+		minimum: 0,
+		maximum: 127,
 	};
 
 	const binary = new Binary();

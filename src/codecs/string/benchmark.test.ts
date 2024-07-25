@@ -1,20 +1,20 @@
-import { benchmarkCodec } from "../utilities/benchmarkCodec";
+import { benchmarkCodec } from "../../utilities/benchmarkCodec";
 import { decodeString } from "./decode";
 import { encodeString } from "./encode";
-import { StringParameters } from "./schema";
+import { StringJsonSchema } from "./schema";
 
 it("benchmarks string codec", () => {
 	const string = "test";
 
-	const parameters: StringParameters = {
+	const schema: StringJsonSchema = {
 		type: "string",
 	};
 
 	benchmarkCodec(
 		"string",
 		string,
-		(binary) => encodeString(string, binary, parameters),
-		(binary) => decodeString(binary, parameters)
+		(binary) => encodeString(string, binary, schema),
+		(binary) => decodeString(binary, schema)
 	);
 
 	expect(true).toBe(true);

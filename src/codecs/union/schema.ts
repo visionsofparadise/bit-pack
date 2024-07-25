@@ -1,46 +1,27 @@
-import { JSONSchema } from "json-schema-to-ts";
-import { JSONSchemaType } from "json-schema-to-ts/lib/types/definitions";
-import { ArrayParameters } from "../array/schema";
-import { BooleanParameters } from "../boolean/schema";
-import { EnumParameters } from "../enum/schema";
-import { IntegerParameters } from "../integer/schema";
-import { NullParameters } from "../null/schema";
-import { NumberParameters } from "../number/schema";
-import { ObjectParameters } from "../object/schema";
-import { StringParameters } from "../string/schema";
+import { ArrayJsonSchema } from "../array/schema";
+import { BooleanJsonSchema } from "../boolean/schema";
+import { EnumJsonSchema } from "../enum/schema";
+import { IntegerJsonSchema } from "../integer/schema";
+import { NullJsonSchema } from "../null/schema";
+import { NumberJsonSchema } from "../number/schema";
+import { ObjectJsonSchema } from "../object/schema";
+import { StringJsonSchema } from "../string/schema";
 
-export const isUnionJsonSchema = (schema: JSONSchema): schema is UnionJsonSchema => typeof schema !== "boolean" && Array.isArray(schema.type);
+export const JSON_SCHEMA_TYPE = ["array", "boolean", "integer", "null", "number", "object", "string"];
 
-export interface UnionJsonSchema {
-	type: Array<JSONSchemaType>;
-}
+export type JsonSchemaType = (typeof JSON_SCHEMA_TYPE)[number];
 
-const JSON_SCHEMA_TYPE_ENUM_VALUES = ["array", "boolean", "integer", "null", "number", "object", "string"];
+export type UnionJsonSchema =
+	| ({
+			type: Array<JsonSchemaType>;
+	  } & Omit<ArrayJsonSchema, "type">)
+	| Omit<BooleanJsonSchema, "type">
+	| Omit<IntegerJsonSchema, "type">
+	| Omit<NullJsonSchema, "type">
+	| Omit<NumberJsonSchema, "type">
+	| Omit<ObjectJsonSchema, "type">
+	| Omit<StringJsonSchema, "type">;
 
-export const JSON_SCHEMA_TYPE_ENUM_PARAMETERS: EnumParameters = {
-	type: "enum",
-	values: JSON_SCHEMA_TYPE_ENUM_VALUES,
-	valueMap: new Map(JSON_SCHEMA_TYPE_ENUM_VALUES.map((value, index) => [value, index])),
-	lengthParameters: {
-		type: "integer",
-		bitLength: 3,
-		byteLength: 1,
-		minimum: 0,
-		multipleOf: 1,
-	},
+export const JSON_SCHEMA_TYPE_ENUM_SCHEMA: EnumJsonSchema = {
+	enum: JSON_SCHEMA_TYPE,
 };
-
-interface TypeParametersMap {
-	array: ArrayParameters;
-	boolean: BooleanParameters;
-	integer: IntegerParameters;
-	null: NullParameters;
-	number: NumberParameters;
-	object: ObjectParameters;
-	string: StringParameters;
-}
-
-export interface UnionParameters {
-	type: "union";
-	parametersMap: Partial<TypeParametersMap>;
-}

@@ -1,33 +1,16 @@
-import { JSONSchema } from "json-schema-to-ts";
-import { IntegerParameters } from "../integer/schema";
-import { Base64Parameters } from "./contentEncoding/base64/schema";
-import { HexParameters } from "./contentEncoding/hex/schema";
-import { DateParameters } from "./format/date/schema";
-import { DateTimeParameters } from "./format/dateTime/schema";
-import { Ipv4Parameters } from "./format/ipv4/schema";
-import { TimeParameters } from "./format/time/schema";
-import { UuidParameters } from "./format/uuid/schema";
-
-export const isStringJsonSchema = (schema: JSONSchema): schema is StringJsonSchema => typeof schema !== "boolean" && schema.type === "string";
+import { MAX_32_BIT_INTEGER } from "../../utilities/calculateIntegerBitLength";
+import { IntegerJsonSchema } from "../integer/schema";
 
 export interface StringJsonSchema {
 	type: "string";
-	format?: "date" | "time" | "date-time" | "ipv4" | "uuid";
+	contentEncoding?: "base32";
 	minLength?: number;
 	maxLength?: number;
-	contentEncoding?: "base16" | "base32" | "base64";
 }
 
-export interface StringParameters {
-	type: "string";
-}
-
-export type StringTypeParameters = Base64Parameters | HexParameters | DateParameters | DateTimeParameters | Ipv4Parameters | TimeParameters | UuidParameters;
-
-export const STRING_LENGTH_PARAMETERS: IntegerParameters = {
+export const STRING_LENGTH_JSON_SCHEMA: IntegerJsonSchema = {
 	type: "integer",
-	bitLength: 32,
-	byteLength: 4,
 	minimum: 0,
+	maximum: MAX_32_BIT_INTEGER,
 	multipleOf: 1,
 };

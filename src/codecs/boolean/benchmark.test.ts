@@ -1,20 +1,20 @@
-import { benchmarkCodec } from "../utilities/benchmarkCodec";
+import { benchmarkCodec } from "../../utilities/benchmarkCodec";
 import { decodeBoolean } from "./decode";
 import { encodeBoolean } from "./encode";
-import { BooleanParameters } from "./schema";
+import { BooleanJsonSchema } from "./schema";
 
 it("encodes and decodes boolean", () => {
 	const boolean = true;
 
-	const parameters: BooleanParameters = {
+	const schema: BooleanJsonSchema = {
 		type: "boolean",
 	};
 
 	benchmarkCodec(
 		"boolean",
 		boolean,
-		(binary) => encodeBoolean(boolean, binary, parameters),
-		(binary) => decodeBoolean(binary, parameters)
+		(binary) => encodeBoolean(boolean, binary, schema),
+		(binary) => decodeBoolean(binary, schema)
 	);
 
 	expect(true).toBe(true);

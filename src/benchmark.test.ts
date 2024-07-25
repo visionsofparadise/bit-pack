@@ -1,6 +1,7 @@
 import { randomBytes } from "crypto";
 import { JSONSchema } from "json-schema-to-ts";
-import { benchmark } from "./codecs/utilities/benchmark";
+import { decode, encode } from ".";
+import { benchmark } from "./utilities/benchmark";
 
 it("benchmarks for spread of all types", () => {
 	const value = {
@@ -90,8 +91,8 @@ it("benchmarks for spread of all types", () => {
 		"typeSpread",
 		value,
 		schema,
-		(miniBit) => miniBit.encode(value, schema["$id"]!),
-		(miniBit, buffer) => miniBit.decode(buffer, schema["$id"]!)
+		() => encode(value, schema),
+		(buffer) => decode(buffer, schema)
 	);
 
 	expect(true).toStrictEqual(true);
@@ -123,8 +124,8 @@ it("benchmarks for many hex strings", () => {
 		"hexArray",
 		value,
 		schema,
-		(miniBit) => miniBit.encode(value, schema["$id"]!),
-		(miniBit, buffer) => miniBit.decode(buffer, schema["$id"]!)
+		() => encode(value, schema),
+		(buffer) => decode(buffer, schema)
 	);
 
 	expect(true).toStrictEqual(true);

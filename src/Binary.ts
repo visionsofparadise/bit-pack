@@ -1,5 +1,5 @@
-import { WebSafeBuffer } from "./codecs/utilities/SafeBuffer";
-import { zeroRightBits } from "./codecs/utilities/zeroBits";
+import { WebSafeBuffer } from "./utilities/SafeBuffer";
+import { zeroRightBits } from "./utilities/zeroBits";
 
 export class Binary {
 	buffer: WebSafeBuffer;

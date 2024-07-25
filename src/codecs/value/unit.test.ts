@@ -2,7 +2,6 @@ import { JSONSchema } from "json-schema-to-ts";
 import { Binary } from "../../Binary";
 import { decodeValue } from "./decode";
 import { encodeValue } from "./encode";
-import { prepareValueSchema } from "./prepareSchema";
 
 it("encodes spread of all values", () => {
 	const schema: Exclude<JSONSchema, boolean> = {
@@ -68,8 +67,6 @@ it("encodes spread of all values", () => {
 		},
 	} as any;
 
-	const parameters = prepareValueSchema(schema);
-
 	const value = {
 		array: ["afafafaf", "afafafaf", "afafafaf"],
 		boolean: true,
@@ -92,9 +89,9 @@ it("encodes spread of all values", () => {
 
 	const binary = new Binary();
 
-	encodeValue(value, binary, parameters);
+	encodeValue(value, binary, schema);
 
-	const result = decodeValue(binary, parameters);
+	const result = decodeValue(binary, schema);
 
 	expect(result).toStrictEqual(value);
 	expect(binary.readBitIndex).toBe(718);

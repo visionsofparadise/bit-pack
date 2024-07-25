@@ -1,20 +1,20 @@
-import { benchmarkCodec } from "../utilities/benchmarkCodec";
+import { benchmarkCodec } from "../../utilities/benchmarkCodec";
 import { decodeNumber } from "./decode";
 import { encodeNumber } from "./encode";
-import { NumberParameters } from "./schema";
+import { NumberJsonSchema } from "./schema";
 
 it("encodes and decodes number", () => {
 	const number = 63.124534534;
 
-	const parameters: NumberParameters = {
+	const schema: NumberJsonSchema = {
 		type: "number",
 	};
 
 	benchmarkCodec(
 		"number",
 		number,
-		(binary) => encodeNumber(number, binary, parameters),
-		(binary) => decodeNumber(binary, parameters)
+		(binary) => encodeNumber(number, binary, schema),
+		(binary) => decodeNumber(binary, schema)
 	);
 
 	expect(true).toBe(true);
